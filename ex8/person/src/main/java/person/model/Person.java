@@ -1,4 +1,4 @@
-package person.person.model;
+package person.model;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;

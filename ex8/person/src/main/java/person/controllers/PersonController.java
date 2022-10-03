@@ -1,9 +1,9 @@
-package person.person.controllers;
+package person.controllers;
 
 import lombok.RequiredArgsConstructor;
-import person.person.model.Person;
+import person.model.Person;
 import org.springframework.web.bind.annotation.*;
-import person.person.repository.PersonRepository;
+import person.repository.PersonRepository;
 
 @RestController
 @RequiredArgsConstructor
@@ -13,13 +13,8 @@ public class PersonController {
 
     @GetMapping("/person/{name}")
     public Person getPerson(@PathVariable("name") String name) {
-        //    return personService.getPerson(name);
         return personRepository.findByName(name);
     }
-
-//    public PersonController(PersonRepository personRepository) {
-//        this.personRepository = personRepository;
-//    }
 
 //    private List<Person> persons = new ArrayList<>();
 //    {
@@ -28,7 +23,6 @@ public class PersonController {
 //        persons.add(new Person("Bred", 50));
 //        persons.add(new Person("Kate", 33));
 //    }
-
 
 //    @GetMapping("/person")
 //    public Person getPerson(@RequestParam("name") String name) {
@@ -58,10 +52,18 @@ public class PersonController {
 //            return null;
 //        }
 //
-//      @PutMapping ("/person/{id}")
-//      public Person addPerson(@PathVariable Integer personId, Person newPerson) {
-//          persons.setPerson(personId, newPerson);
-//       }
+@PutMapping("/person/{id}")
+public Person changePerson(@RequestBody Person newPerson, @PathVariable Integer id) {
+    return personRepository.findById(id)
+            .map(person -> {
+                person.setAge(newPerson.getAge());
+                return personRepository.save(person);
+            })
+            .orElseGet(() -> {
+                newPerson.setId(id);
+                return personRepository.save(newPerson);
+            });
+}
 //
 //      @PatchMapping ("/person/{id}")
 //      public Person changePerson(@PathVariable Integer personId, Person newPerson) {
@@ -73,8 +75,9 @@ public class PersonController {
 //          persons.clear();
 //       }
 //
-//       @DeleteMapping("/person/{id}")
-//       public void deletePerson(@PathVariable Integer personId) {
-//           persons.remove(personId);
+@DeleteMapping("/person/{id}")
+public void deletePerson(@PathVariable Integer id) {
+    personRepository.deleteById(id);
+}
 //       }
 }
