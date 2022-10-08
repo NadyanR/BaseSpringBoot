@@ -13,4 +13,5 @@ public interface PersonRepository extends JpaRepository<Person, Integer> {
     Person findByNameAndAge(String name, Integer age);
     List<Person> findByAge(Integer age);
 
+    boolean existsByPassport(String passport);
 }

@@ -19,8 +19,8 @@ public class PersonController {
     }
 
     //ex.10 Принимает имя и возраст, возвращает одного совпадающего человека
-    @GetMapping("/person/{name}/{age}")
-    public Person getPerson(@PathVariable("name") String name, @PathVariable("age") Integer age) {
+    @GetMapping("/person")
+    public Person getPerson(@RequestParam("name") String name, @RequestParam("age") Integer age) {
         return personRepository.findByNameAndAge(name, age);
     }
 
@@ -80,7 +80,15 @@ public class PersonController {
     }
 
     //ex.10 Принимает в теле json, сохраняет в БД нового человека с паспортом
-    //....
+    @PostMapping("/person")
+    public Person addPerson(@RequestBody Person newPerson) {
+        if (personRepository.existsByPassport(newPerson.getPassport()) == true) {
+            System.out.println("Запись существует в БД");
+        } else {
+            return personRepository.save(newPerson);
+        }
+        return null;
+    }
 
 //      @PatchMapping ("/person/{id}")
 //      public Person changePerson(@PathVariable Integer personId, Person newPerson) {
