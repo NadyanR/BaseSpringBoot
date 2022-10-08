@@ -14,4 +14,9 @@ public interface PersonRepository extends JpaRepository<Person, Integer> {
     List<Person> findByAge(Integer age);
 
     boolean existsByPassport(String passport);
+
+    //ex.11 метод, возвращающий всех людей старше 30 лет (PersonDto)
+    List<Person> findByAgeGreaterThan(Integer age);
+//    @Query(value = "SELECT u FROM User u WHERE u.age > 30")
+//    List<Person> findAllPersons(Sort sort);
 }

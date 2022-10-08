@@ -2,6 +2,8 @@ package person.controllers;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import person.converter.PersonConverter;
+import person.dto.PersonDto;
 import person.model.Person;
 import person.repository.PersonRepository;
 
@@ -12,63 +14,49 @@ import java.util.List;
 public class PersonController {
 
     private final PersonRepository personRepository;
+    private final PersonConverter converter;
 
     @GetMapping("/person/{name}")
-    public Person getPerson(@PathVariable("name") String name) {
-        return personRepository.findByName(name);
+    //public Person getPerson(@PathVariable("name") String name) {
+    //return personRepository.findByName(name);
+
+    //ex.11 возврат PersonDto
+    public PersonDto getPerson(@PathVariable("name") String name) {
+        Person person = personRepository.findByName(name);
+        return converter.entityToDto(person);
     }
 
-    //ex.10 Принимает имя и возраст, возвращает одного совпадающего человека
     @GetMapping("/person")
-    public Person getPerson(@RequestParam("name") String name, @RequestParam("age") Integer age) {
-        return personRepository.findByNameAndAge(name, age);
+    //ex.10 Принимает имя и возраст, возвращает одного совпадающего человека
+    //public Person getPerson(@RequestParam("name") String name, @RequestParam("age") Integer age) {
+    //return personRepository.findByNameAndAge(name, age);
+
+    //ex.11 возврат PersonDto
+    public PersonDto getPerson(@RequestParam("name") String name, @RequestParam("age") Integer age) {
+        Person person = personRepository.findByNameAndAge(name, age);
+        return converter.entityToDto(person);
     }
 
-    //ex.10 Принимает возраст, возвращает всех совпадающих людей
     @GetMapping("/persons/{age}")
-    public List<Person> getPersons(@PathVariable("age") Integer age) {
-        return personRepository.findByAge(age);
+    //ex.10 Принимает возраст, возвращает всех совпадающих людей
+    //public List<Person> getPersons(@PathVariable("age") Integer age) {return personRepository.findByAge(age);
+
+    //ex.11 возврат список PersonDto
+    public List<PersonDto> getPersons(@PathVariable("age") Integer age) {
+        List<Person> persons = personRepository.findByAge(age);
+        return converter.entityToDto(persons);
     }
 
-//    private List<Person> persons = new ArrayList<>();
-//    {
-//        persons.add(new Person("John", 20));
-//        persons.add(new Person("Joanna", 24));
-//        persons.add(new Person("Bred", 50));
-//        persons.add(new Person("Kate", 33));
-//    }
+    @GetMapping("/persons1/{age}")
+   //ex.11 возврат список PersonDto, кто старше 30 лет
+    public List<PersonDto> getPersons30(@PathVariable("age") Integer age) {
+        return converter.entityToDto(personRepository.findByAgeGreaterThan(age));
+    }
 
-//    @GetMapping("/person")
-//    public Person getPerson(@RequestParam("name") String name) {
-//        for (Person person : persons) {
-//            if (person.getName().equals(name)) {
-//                //return new Person(person.getName(), person.getAge());}
-//                return person;}
-//        }
-//        return null;
-//    }
-
-//    @GetMapping("/person/{name}")
-//    public Person showPerson(@PathVariable("name") String name) {
-//        for (Person person : persons) {
-//            if (person.getName().equals(name)) {
-//                return person;}
-//        }
-//        return null;
-//    }
-//    @PostMapping("/person")
-//    public Person showPerson(@RequestBody Person person) {
-//        for (Person person1 : persons) {
-//            if (person1.getName().equals(person.getName())) {
-//                return person1;}
-//                //return String.format("Person: %s %d", person.getName(), person.getAge());
-//        }
-//            return null;
-//        }
-//
-@PutMapping("/person/{id}")
-    public Person changePerson(@RequestBody Person newPerson, @PathVariable Integer id) {
-        return personRepository.findById(id)
+    @PutMapping("/person/{id}")
+    // ex.11 возврат PersonDto (изменение только age)
+    public PersonDto changePerson(@RequestBody Person newPerson, @PathVariable Integer id) {
+        Person personDto = personRepository.findById(id)
                 .map(person -> {
                     person.setAge(newPerson.getAge());
                     return personRepository.save(person);
@@ -77,32 +65,25 @@ public class PersonController {
                     newPerson.setId(id);
                     return personRepository.save(newPerson);
                 });
+        return converter.entityToDto(personDto);
     }
 
-    //ex.10 Принимает в теле json, сохраняет в БД нового человека с паспортом
     @PostMapping("/person")
-    public Person addPerson(@RequestBody Person newPerson) {
+    //ex.10 Принимает в теле json, сохраняет в БД нового человека с паспортом
+    public PersonDto addPerson(@RequestBody Person newPerson) {
         if (personRepository.existsByPassport(newPerson.getPassport())) {
             System.out.println("Запись существует в БД");
         } else {
-            return personRepository.save(newPerson);
+//            return personRepository.save(newPerson)
+            // ex.11 возврат PersonDto
+            Person person = personRepository.save(newPerson);
+            return converter.entityToDto(person);
         }
         return null;
     }
 
-//      @PatchMapping ("/person/{id}")
-//      public Person changePerson(@PathVariable Integer personId, Person newPerson) {
-//          persons.setPerson(personId, newPerson);
-//       }
-//
-//      @DeleteMapping("/person")
-//       public void deleteAllPersons() {
-//          persons.clear();
-//       }
-//
-        @DeleteMapping("/person/{id}")
-        public void deletePerson(@PathVariable Integer id) {
-    personRepository.deleteById(id);
-}
-//       }
+    @DeleteMapping("/person/{id}")
+    public void deletePerson(@PathVariable Integer id) {
+        personRepository.deleteById(id);
+    }
 }
