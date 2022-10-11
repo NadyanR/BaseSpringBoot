@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import person.converter.PersonConverter;
 import person.dto.PersonDto;
+import person.exception_handling.NoSuchPersonException;
 import person.model.Person;
 import person.repository.PersonRepository;
 
@@ -23,6 +24,10 @@ public class PersonController {
     //ex.11 возврат PersonDto
     public PersonDto getPerson(@PathVariable("name") String name) {
         Person person = personRepository.findByName(name);
+    //ex.12 Исключения
+        if (person == null){
+            throw new NoSuchPersonException("There is no person with name = " + name + " in DataBase");
+        }
         return converter.entityToDto(person);
     }
 
@@ -34,6 +39,10 @@ public class PersonController {
     //ex.11 возврат PersonDto
     public PersonDto getPerson(@RequestParam("name") String name, @RequestParam("age") Integer age) {
         Person person = personRepository.findByNameAndAge(name, age);
+        //ex.12 Исключения
+        if (person == null){
+            throw new NoSuchPersonException("There is no person with name = " + name + " and age = "+ age + " in DataBase");
+        }
         return converter.entityToDto(person);
     }
 
@@ -44,13 +53,22 @@ public class PersonController {
     //ex.11 возврат список PersonDto
     public List<PersonDto> getPersons(@PathVariable("age") Integer age) {
         List<Person> persons = personRepository.findByAge(age);
+        //ex.12 Исключения
+        if (persons.isEmpty()){
+            throw new NoSuchPersonException("There are no persons with age = " + age + " in DataBase");
+        }
         return converter.entityToDto(persons);
     }
 
     @GetMapping("/persons1/{age}")
    //ex.11 возврат список PersonDto, кто старше 30 лет
     public List<PersonDto> getPersons30(@PathVariable("age") Integer age) {
-        return converter.entityToDto(personRepository.findByAgeGreaterThan(age));
+        //return converter.entityToDto(personRepository.findByAgeGreaterThan(age));
+        //ex.12 Исключения
+        if (personRepository.findAllPersons(age).isEmpty()){
+            throw new NoSuchPersonException("There are no persons older than " + age + " years old in DataBase");
+        }
+        return converter.entityToDto(personRepository.findAllPersons(age));
     }
 
     @PutMapping("/person/{id}")
@@ -84,6 +102,6 @@ public class PersonController {
 
     @DeleteMapping("/person/{id}")
     public void deletePerson(@PathVariable Integer id) {
-        personRepository.deleteById(id);
+       personRepository.deleteById(id);
     }
 }
