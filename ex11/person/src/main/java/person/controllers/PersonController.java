@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import person.converter.PersonConverter;
 import person.dto.PersonDto;
+import person.exception_handling.ErrorCodes;
 import person.exception_handling.NoSuchPersonException;
 import person.model.Person;
 import person.repository.PersonRepository;
@@ -26,9 +27,11 @@ public class PersonController {
         Person person = personRepository.findByName(name);
     //ex.12 Исключения
         if (person == null){
-            throw new NoSuchPersonException("There is no person with name = " + name + " in DataBase");
+            //throw new NoSuchPersonException("There is no person with name = " + name + " in DataBase");
+            throw new NoSuchPersonException(ErrorCodes.VALIDATION_PARSE_ERROR);
         }
         return converter.entityToDto(person);
+
     }
 
     @GetMapping("/person")
@@ -41,7 +44,8 @@ public class PersonController {
         Person person = personRepository.findByNameAndAge(name, age);
         //ex.12 Исключения
         if (person == null){
-            throw new NoSuchPersonException("There is no person with name = " + name + " and age = "+ age + " in DataBase");
+            //throw new NoSuchPersonException("There is no person with name = " + name + " and age = "+ age + " in DataBase");
+            throw new NoSuchPersonException(ErrorCodes.VALIDATION_PARSE_ERROR);
         }
         return converter.entityToDto(person);
     }
@@ -55,7 +59,8 @@ public class PersonController {
         List<Person> persons = personRepository.findByAge(age);
         //ex.12 Исключения
         if (persons.isEmpty()){
-            throw new NoSuchPersonException("There are no persons with age = " + age + " in DataBase");
+            //throw new NoSuchPersonException("There are no persons with age = " + age + " in DataBase");
+            throw new NoSuchPersonException(ErrorCodes.VALIDATION_PARSE_ERROR);
         }
         return converter.entityToDto(persons);
     }
@@ -66,7 +71,8 @@ public class PersonController {
         //return converter.entityToDto(personRepository.findByAgeGreaterThan(age));
         //ex.12 Исключения
         if (personRepository.findAllPersons(age).isEmpty()){
-            throw new NoSuchPersonException("There are no persons older than " + age + " years old in DataBase");
+            //throw new NoSuchPersonException("There are no persons older than " + age + " years old in DataBase");
+            throw new NoSuchPersonException(ErrorCodes.VALIDATION_PARSE_ERROR);
         }
         return converter.entityToDto(personRepository.findAllPersons(age));
     }
