@@ -8,11 +8,16 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
+//    @ExceptionHandler
+//    public ResponseEntity<PersonException> handleException(NoSuchPersonException exception){
+//        PersonException data = new PersonException();
+//        data.setInfo(exception.getMessage());
+//        return new ResponseEntity<>(data, HttpStatus.NOT_FOUND);
+//    }
+
     @ExceptionHandler
-    public ResponseEntity<PersonException> handleException(NoSuchPersonException exception){
-        PersonException data = new PersonException();
-        data.setInfo(exception.getMessage());
-        return new ResponseEntity<>(data, HttpStatus.NOT_FOUND);
+    public ResponseEntity handleException(NoSuchPersonException exception){
+        return new ResponseEntity (exception.getMessage(), HttpStatus.valueOf(exception.getExceptionType().getCode()));
     }
 
     @ExceptionHandler

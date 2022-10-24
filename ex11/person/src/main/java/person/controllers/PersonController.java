@@ -23,8 +23,8 @@ public class PersonController {
     //return personRepository.findByName(name);
 
     //ex.11 возврат PersonDto
-    public PersonDto getPerson(@PathVariable("name") String name) {
-        Person person = personRepository.findByName(name);
+    public List<PersonDto> getPerson(@PathVariable("name") String name) {
+        List<Person> person = personRepository.findByName(name);
     //ex.12 Исключения
         if (person == null){
             //throw new NoSuchPersonException("There is no person with name = " + name + " in DataBase");

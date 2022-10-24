@@ -1,7 +1,7 @@
 package person.exception_handling;
 
 public enum ErrorCodes {
-    VALIDATION_PARSE_ERROR(404, "Пользователь не найден");
+    VALIDATION_PARSE_ERROR(400, "Пользователь не найден");
 
     private int code;
     private String message;
