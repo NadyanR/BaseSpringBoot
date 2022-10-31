@@ -7,6 +7,7 @@ import person.dto.PersonDto;
 import person.exception_handling.ErrorCodes;
 import person.exception_handling.NoSuchPersonException;
 import person.model.Person;
+import person.repository.PassportRepository;
 import person.repository.PersonRepository;
 
 import java.util.List;
@@ -16,6 +17,7 @@ import java.util.List;
 public class PersonController {
 
     private final PersonRepository personRepository;
+    private final PassportRepository passportRepository;
     private final PersonConverter converter;
 
     @GetMapping("/person/{name}")
@@ -92,33 +94,31 @@ public class PersonController {
         return converter.entityToDto(personDto);
     }
 
-    @PostMapping("/person")
-    //ex.10 Принимает в теле json, сохраняет в БД нового человека с паспортом
-    public PersonDto addPerson(@RequestBody Person newPerson) {
-        if (personRepository.existsByPassport(newPerson.getPassport())) {
-            System.out.println("Запись существует в БД");
-        } else {
-//            return personRepository.save(newPerson);
-            // ex.11 возврат PersonDto
-            Person person = personRepository.save(newPerson);
-            return converter.entityToDto(person);
-        }
-        return null;
-    }
 //    @PostMapping("/person")
 //    //ex.10 Принимает в теле json, сохраняет в БД нового человека с паспортом
-//    public List<Person> addPerson(@RequestBody List<Person> newPerson) {
+//    public PersonDto addPerson(@RequestBody Person newPerson) {
 //        if (personRepository.existsByPassport(newPerson.getPassport())) {
 //            System.out.println("Запись существует в БД");
 //        } else {
-//            return personRepository.save(newPerson)
+////            return personRepository.save(newPerson);
 //            // ex.11 возврат PersonDto
-//
-//            List<Person> persons = personRepository.saveAll(newPerson);
-//            return persons;
+//            Person person = personRepository.save(newPerson);
+//            return converter.entityToDto(person);
 //        }
 //        return null;
 //    }
+
+//    @PostMapping("/person")
+//    //ex.13 Принимает в теле json, сохраняет в БД нового человека с паспортом
+//    public Person createPerson(@RequestBody Person newPerson) {
+//        return personRepository.save(newPerson);
+//    }
+
+    @PostMapping("/person")
+    //ex.13 Принимает в теле json несколько человек с паспортами, сохраняет в БД людей и паспорта за один раз
+    public List<Person> addPerson(@RequestBody List<Person> newPerson) {
+            return personRepository.saveAll(newPerson);
+        }
 
     @DeleteMapping("/person/{id}")
     public void deletePerson(@PathVariable Integer id) {

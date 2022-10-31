@@ -18,6 +18,7 @@ public class Passport {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Column(name = "id")
     private Integer id;
 
     private String series;

@@ -35,16 +35,16 @@ public class Person {
 
     //private String passport;
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "passport_id")
+    @JoinColumn(name = "passport_id", referencedColumnName = "id")
     private Passport passport;
 
     private String address;
 
     private String mobile;
 
-    public Passport getPassport() {return passport;    }
+    //public Passport getPassport() {return passport;}
 
-    public void setPassport(Passport passport) {this.passport = passport; }
+    //public void setPassport(Passport passport) {this.passport = passport; }
 //    public Person (String name){
 //        this.name = name;}
 //
