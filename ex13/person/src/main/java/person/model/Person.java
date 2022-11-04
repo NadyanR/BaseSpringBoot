@@ -1,7 +1,6 @@
 package person.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,7 +11,7 @@ import java.time.LocalDate;
 @Entity
 @Table(name = "person")
 @AllArgsConstructor
-@NoArgsConstructor(access= AccessLevel.PRIVATE, force = true)
+@NoArgsConstructor//(access= AccessLevel.PRIVATE, force = true)
 @Data
 public class Person {
 
