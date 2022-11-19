@@ -22,4 +22,7 @@ public interface PersonRepository extends JpaRepository<Person, Integer> {
     //List<Person> findByAgeGreaterThan(Integer age);
     @Query(value = "SELECT u FROM Person u WHERE u.age > :age" )
     List<Person> findAllPersons(@Param("age")Integer age);
+
+    //ex.16.1 вывод все сотрудников в одном отделе (запрос GET в Department)
+    List<Person> findPersonsByDepartmentId(Integer department_id);
 }

@@ -1,6 +1,7 @@
 package person.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -41,9 +42,13 @@ public class Person {
 
     private String mobile;
 
-    //public Passport getPassport() {return passport;}
+    @JsonIgnore
+    @ManyToOne(cascade = {CascadeType.ALL, CascadeType.PERSIST,
+            CascadeType.DETACH, CascadeType.REFRESH, CascadeType.MERGE})
+    @JoinColumn(name = "department_id", referencedColumnName = "id")
+    private Department department;
 
-    //public void setPassport(Passport passport) {this.passport = passport; }
+
 //    public Person (String name){
 //        this.name = name;}
 //
@@ -51,5 +56,4 @@ public class Person {
 //        this.name = name;
 //        this.age = age;
 //    }
-
 }
