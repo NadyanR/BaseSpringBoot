@@ -7,7 +7,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.LocalDate;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
 @Entity
@@ -21,8 +24,12 @@ public class Person {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     //@Column(name = "id")
     private Integer id;
+
+    @NotNull
+    @Size(min =2, message = "Не указано имя")
     private String name;
     private Integer age;
+    //private LocalDate birthday;//ex.17
 
     private String surname;
 
@@ -30,21 +37,27 @@ public class Person {
 
     @Column(name = "creation_date")
     @JsonFormat(pattern = "dd.MM.yyyy")
-    private LocalDate creationDate;
+    private LocalDateTime creationDate;
 
-    @PrePersist
+    @PrePersist//заполняет поле значением времени внесения записи о персон перед сохранием в БД
     private void prePersist() {
-        creationDate = LocalDate.from(LocalDateTime.now());}
+        creationDate = LocalDateTime.now();}
 
+    @Pattern(regexp="^([A-Z][A-z0-9]{7,9})$",
+            message = "Пароль не соответсвует допустимому формату")
     private String password;
 
     //private String passport;
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "passport_id", referencedColumnName = "id")
+    @NotNull
+    @Valid
     private Passport passport;
 
     private String address;
 
+    @Pattern(regexp="^(\\+7|8)(\\d{10})$",
+            message = "Номер телефона не соответсвует допустимому формату")
     private String mobile;
 
     @JsonIgnore
@@ -52,13 +65,4 @@ public class Person {
             CascadeType.DETACH, CascadeType.REFRESH, CascadeType.MERGE})
     @JoinColumn(name = "department_id", referencedColumnName = "id")
     private Department department;
-
-
-//    public Person (String name){
-//        this.name = name;}
-//
-//    public Person (String name, Integer age){
-//        this.name = name;
-//        this.age = age;
-//    }
 }
