@@ -11,6 +11,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -28,13 +29,14 @@ public class Person {
     @NotNull
     @Size(min =2, message = "Не указано имя")
     private String name;
-    private Integer age;
-    //private LocalDate birthday;//ex.17
+    //private Integer age;
+    @Column(name = "birthday_date")
+    @JsonFormat(pattern = "dd.MM.yyyy")
+    private LocalDate birthday;//ex.17
 
     private String surname;
 
     private String patronymic;
-
     @Column(name = "creation_date")
     @JsonFormat(pattern = "dd.MM.yyyy")
     private LocalDateTime creationDate;

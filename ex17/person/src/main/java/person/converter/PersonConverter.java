@@ -17,7 +17,8 @@ public class PersonConverter {
         dto.setName(person.getName());
         dto.setSurname(person.getSurname());
         dto.setPatronymic(person.getPatronymic());
-        dto.setAge(person.getAge());
+        //dto.setAge(person.getAge());
+        dto.setBirthday(person.getBirthday());//ex.17
         dto.setPassportDto(new PassportDto(person.getPassport().getSeries(),
                                 person.getPassport().getNumber(),
                                 person.getPassport().getDateOfIssue()));
@@ -38,7 +39,8 @@ public class PersonConverter {
         newPerson.setName(dto.getName());
         newPerson.setSurname(dto.getSurname());
         newPerson.setPatronymic(dto.getPatronymic());
-        newPerson.setAge(dto.getAge());
+        //newPerson.setAge(dto.getAge());
+        newPerson.setBirthday(dto.getBirthday());//ex.17
         return newPerson;
     }
 

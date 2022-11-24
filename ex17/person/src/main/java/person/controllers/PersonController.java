@@ -8,6 +8,8 @@ import person.model.Person;
 import person.repository.PersonRepository;
 import person.services.PersonService;
 
+import javax.validation.Valid;
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -18,28 +20,28 @@ public class PersonController {
     private final PersonConverter converter;
     private final PersonService personService;
 
-    @GetMapping("/person/{name}")
-    public List<PersonDto> getPerson1(@PathVariable("name") String name) {
+//    @GetMapping("/person/{name}")
+//    public List<PersonDto> getPerson1(@PathVariable("name") String name) {
+//        // ex.15* Логика формирования PersonDto вынесена в отдельный класс PersonService
+//        return personService.convertToDto(name);
+//    }
+
+    @GetMapping("/person")//ex.17 замена age на birthday
+    public PersonDto getPerson(@RequestParam("name") String name, @RequestParam("birthday") LocalDate birthday) {
         // ex.15* Логика формирования PersonDto вынесена в отдельный класс PersonService
-        return personService.convertToDto(name);
+        return personService.convertToDto(name, birthday);
     }
 
-    @GetMapping("/person")
-    public PersonDto getPerson(@RequestParam("name") String name, @RequestParam("age") Integer age) {
+    @GetMapping("/persons/{birthday}")//ex.17 замена age на birthday
+    public List<PersonDto> getPersons(@PathVariable("birthday") LocalDate birthday) {
         // ex.15* Логика формирования PersonDto вынесена в отдельный класс PersonService
-        return personService.convertToDto(name, age);
+        return personService.convertToDto(birthday);
     }
 
-    @GetMapping("/persons/{age}")
-    public List<PersonDto> getPersons(@PathVariable("age") Integer age) {
+    @GetMapping("/persons1/{birthday}")//ex.17 замена age на birthday
+    public List<PersonDto> getPersons30(@PathVariable("birthday") LocalDate birthday) {
         // ex.15* Логика формирования PersonDto вынесена в отдельный класс PersonService
-        return personService.convertToDto(age);
-    }
-
-    @GetMapping("/persons1/{age}")
-    public List<PersonDto> getPersons30(@PathVariable("age") Integer age) {
-        // ex.15* Логика формирования PersonDto вынесена в отдельный класс PersonService
-        return personService.convertToDto2(age);
+        return personService.convertToDto2(birthday);
     }
 
     @PutMapping("/person/{id}")
@@ -56,7 +58,7 @@ public class PersonController {
 
     @PostMapping("/person")
     //ex.13* Принимает в теле json несколько человек с паспортами, сохраняет в БД людей и паспорта за один раз
-    public List<Person> addPerson(@RequestBody List<Person> newPerson) {
+    public List<Person> addPerson(@Valid @RequestBody List<Person> newPerson) {
             return personRepository.saveAll(newPerson);}
 
     @PostMapping("/person/dto")

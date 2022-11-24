@@ -42,7 +42,6 @@ public class DepartmentController {
                     return departmentRepository.save(dep);})
                             .orElseThrow(() -> new NoSuchPersonException(ErrorCodes.VALIDATION_DEPARTMENT_ERROR));
         return department;
-
     }
 
     //ex.16.1 - вывести перечень сотрудников в отделе

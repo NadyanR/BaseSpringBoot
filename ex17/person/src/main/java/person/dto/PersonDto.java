@@ -5,17 +5,19 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
+import java.time.LocalDate;
+
 @NoArgsConstructor
 @AllArgsConstructor
+@Data
 public class PersonDto {
 
     private String name;
     private String surname;
     private String patronymic;
-    private Integer age;
+    //private Integer age;
+    private LocalDate birthday;//ex.17
 
     @JsonProperty("passport")
     private PassportDto passportDto;
-
 }
