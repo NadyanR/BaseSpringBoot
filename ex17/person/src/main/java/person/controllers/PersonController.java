@@ -56,10 +56,17 @@ public class PersonController {
 //        return personRepository.save(newPerson);
 //    }
 
+//    @PostMapping("/person")
+//    //ex.13* Принимает в теле json несколько человек с паспортами, сохраняет в БД людей и паспорта за один раз
+//    public List<Person> addPerson(@Valid @RequestBody List<Person> newPerson) {
+//            return personRepository.saveAll(newPerson);
+//    }
+
     @PostMapping("/person")
-    //ex.13* Принимает в теле json несколько человек с паспортами, сохраняет в БД людей и паспорта за один раз
-    public List<Person> addPerson(@Valid @RequestBody List<Person> newPerson) {
-            return personRepository.saveAll(newPerson);}
+    //ex.13* Принимает в теле json человека с паспортом, сохраняет в БД
+    public Person addPerson(@Valid @RequestBody Person newPerson) {
+            return personRepository.save(newPerson);
+    }
 
     @PostMapping("/person/dto")
     // ex.14* передаем DTO -> получаем Объект Person (Принимай дто, и создавай сама объект персон из этой дто)
