@@ -1,0 +1,43 @@
+databaseChangeLog:
+  - changeSet:
+      id: createOperationTable&changeAgeOnBirthday
+      author: Nadezhda R
+      changes:
+        - createTable:
+            tableName: department_operations
+            columns:
+              - column:
+                  name: department_id
+                  type: bigint
+                  constraints:
+                    nullable: true
+                    foreignKeyName: fk_dep_operations_dep
+                    references: department(id)
+              - column:
+                  name: name
+                  type: varchar(225)
+                  constraints:
+                    nullable: true
+              - column:
+                  name: equipment_count
+                  type: int
+                  constraints:
+                    nullable: true
+              - column:
+                  name: square
+                  type: int
+                  constraints:
+                    nullable: true
+        - addColumn:
+            tableName: person
+            columns:
+              - column:
+                  name: birthday_date
+                  type: date
+                  constraints:
+                    nullable: true
+        - dropColumn:
+            tableName: person
+            columns:
+              - column:
+                  name: age

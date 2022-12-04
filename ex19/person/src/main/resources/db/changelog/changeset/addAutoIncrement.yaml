@@ -1,0 +1,29 @@
+databaseChangeLog:
+  - changeSet:
+      id:  addAutoIncrement
+      author:  Nadezhda R
+      changes:
+        -  addAutoIncrement:
+            tableName: person
+            columnDataType:  int
+            columnName: id
+            defaultOnNull: false
+            generationType: ALWAYS
+            incrementBy: 1
+            startWith: 1
+        - addAutoIncrement:
+              tableName: passport
+              columnDataType: bigint
+              columnName: id
+              defaultOnNull: false
+              generationType: ALWAYS
+              incrementBy: 1
+              startWith: 1
+        - addAutoIncrement:
+              tableName: department
+              columnDataType: bigint
+              columnName: id
+              defaultOnNull: false
+              generationType: ALWAYS
+              incrementBy: 1
+              startWith: 1

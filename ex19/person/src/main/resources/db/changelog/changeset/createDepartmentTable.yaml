@@ -1,0 +1,41 @@
+databaseChangeLog:
+  - changeSet:
+      id: createDepartmentTable
+      author: Nadezhda R
+      changes:
+        - createTable:
+            tableName: department
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: department_name
+                  type: varchar(100)
+                  constraints:
+                    nullable: true
+              - column:
+                  name: department_number
+                  type: varchar(100)
+                  constraints:
+                    unique: true
+                    nullable: false
+              - column:
+                  name: person_amount
+                  type: bigint
+                  constraints:
+                    nullable: true
+        - addColumn:
+            tableName: person
+            columns:
+              - column:
+                  name: department_id
+                  type: bigint
+                  constraints:
+                    nullable: true
+                    foreignKeyName: fk_person_dep
+                    references: department(id)
