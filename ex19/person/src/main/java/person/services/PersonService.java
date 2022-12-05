@@ -1,7 +1,6 @@
 package person.services;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import person.converter.PersonConverter;
 import person.dto.PersonDto;
@@ -10,9 +9,7 @@ import person.exception_handling.NoSuchPersonException;
 import person.model.Person;
 import person.repository.PersonRepository;
 
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -68,13 +65,5 @@ public class PersonService {
                     newPerson.setId(id);
                     return personRepository.save(newPerson);});
         return converter.entityToDto(personDto);
-    }
-
-    //ex19 Вывод всех людей без отчетсва (=null),проверка каждые 10 сек
-    @Scheduled(fixedRate = 10000)
-    public void checkPersonPatronymic(){
-        List<Person> persons = personRepository.findPersonsByPatronymicIsNull();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
-        System.out.println(dateFormat.format(new Date()) + " " + persons);
     }
 }
