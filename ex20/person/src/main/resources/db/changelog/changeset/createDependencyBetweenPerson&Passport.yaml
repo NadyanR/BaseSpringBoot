@@ -1,0 +1,20 @@
+databaseChangeLog:
+  - changeSet:
+      id: createDependencyBetweenPerson&Passport
+      author: Nadezhda R
+      changes:
+        - addColumn:
+            tableName: person
+            columns:
+              - column:
+                  name: passport_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_person
+                    references: passport(id)
+        - dropColumn:
+            tableName: person
+            columns:
+              - column:
+                  name: passport

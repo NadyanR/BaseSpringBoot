@@ -1,0 +1,32 @@
+databaseChangeLog:
+  - changeSet:
+      id: createPassportTable
+      author: Nadezhda R
+      changes:
+        - createTable:
+            tableName: passport
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: series
+                  type: varchar(4)
+                  constraints:
+                    unique: true
+                    nullable: false
+              - column:
+                  name: number
+                  type: varchar(6)
+                  constraints:
+                    unique: true
+                    nullable: false
+              - column:
+                  name: issue_date
+                  type: date
+                  constraints:
+                    nullable: false

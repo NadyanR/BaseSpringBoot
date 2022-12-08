@@ -1,0 +1,43 @@
+databaseChangeLog:
+  - changeSet:
+      id: addColumnToPersonTable
+      author: Nadezhda R
+      changes:
+        - addColumn:
+            tableName: person
+            columns:
+              - column:
+                  name: surname
+                  type: varchar(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: patronymic
+                  type: varchar(100)
+                  constraints:
+                    nullable: true
+              - column:
+                  name: creation_date
+                  type: datetime
+                  constraints:
+                    nullable: true
+              - column:
+                  name: password
+                  type: varchar(16)
+                  constraints:
+                    nullable: true
+              - column:
+                  name: passport
+                  type: varchar(10)
+                  constraints:
+                    nullable: true
+              - column:
+                  name: address
+                  type: varchar(100)
+                  constraints:
+                    nullable: true
+              - column:
+                  name: mobile
+                  type: varchar(20)
+                  constraints:
+                    nullable: true
